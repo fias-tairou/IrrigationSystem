@@ -10,10 +10,10 @@ public class IrrigationScheduler
     private readonly double MoistureThreshold;
     private readonly double RainfallThreshold;
 
-    private int failures = 0; // Foutenteller
-    private const int MaxFailures = 3; // Maximaal aantal fouten voor Safe Mode
+    private int failures = 0; 
+    private const int MaxFailures = 3; 
 
-    public bool IsInSafeMode => failures >= MaxFailures; // Eigenschap voor Safe Mode
+    public bool IsInSafeMode => failures >= MaxFailures; 
 
     public IrrigationScheduler(
         ISoilMoistureSensor soilMoistureSensor,
@@ -31,7 +31,6 @@ public class IrrigationScheduler
 
     public void Work()
     {
-        // Controleer eerst of we in Safe Mode zijn
         if (IsInSafeMode)
         {
             Console.WriteLine("System is in Safe Mode. Irrigation stopped.");
@@ -41,17 +40,13 @@ public class IrrigationScheduler
 
         try
         {
-            // Haal gegevens op
             var weather = weatherApi.GetWeatherData();
             var soilMoisture = soilMoistureSensor.GetSoilMoisture();
 
-            // Reset foutenteller bij succes
             failures = 0;
 
-            // Beslissingslogica - Huidige logica wordt behouden
             if (weather.Rainfall == 0 && soilMoisture >= MoistureThreshold)
             {
-                // Doe niets
                 return;
             }
 
@@ -73,14 +68,12 @@ public class IrrigationScheduler
                 return;
             }
 
-            // Prioriteit 1: Regenval
             if (weather.Rainfall >= RainfallThreshold)
             {
                 irrigationController.Stop();
                 return;
             }
 
-            // Prioriteit 2: Bodemvochtigheid
             if (soilMoisture < MoistureThreshold)
             {
                 irrigationController.Start();

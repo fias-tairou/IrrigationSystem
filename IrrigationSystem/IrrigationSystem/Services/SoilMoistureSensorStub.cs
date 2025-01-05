@@ -13,7 +13,6 @@ namespace IrrigationSystem.Services
 
         public double GetSoilMoisture()
         {
-            // Retourneer de vooraf ingestelde waarde
             return soilMoisture;
         }
     }

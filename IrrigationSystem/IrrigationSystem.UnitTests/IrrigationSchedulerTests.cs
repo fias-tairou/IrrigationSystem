@@ -64,14 +64,13 @@ public class IrrigationSchedulerTests
     [Fact]
     public void Work_WhenRainfallEqualsThreshold_ShouldStopIrrigation()
     {
-        // Arrange
         var weatherMock = new Mock<IWeatherApi>();
         weatherMock.Setup(api => api.GetWeatherData())
-                   .Returns(new WeatherData { Rainfall = 10.0 }); // At threshold
+                   .Returns(new WeatherData { Rainfall = 10.0 }); 
 
         var soilSensorMock = new Mock<ISoilMoistureSensor>();
         soilSensorMock.Setup(sensor => sensor.GetSoilMoisture())
-                      .Returns(40.0); // Above threshold
+                      .Returns(40.0); 
 
         var irrigationMock = new Mock<IIrrigationController>();
 
@@ -83,10 +82,8 @@ public class IrrigationSchedulerTests
             rainfallThreshold: 10.0
         );
 
-        // Act
         scheduler.Work();
 
-        // Assert
         irrigationMock.Verify(controller => controller.Start(), Times.Never);
         irrigationMock.Verify(controller => controller.Stop(), Times.Once);
     }
@@ -94,14 +91,13 @@ public class IrrigationSchedulerTests
     [Fact]
     public void Work_WhenSoilMoistureBelowThreshold_ShouldStartIrrigation()
     {
-        // Arrange
         var weatherMock = new Mock<IWeatherApi>();
         weatherMock.Setup(api => api.GetWeatherData())
-                   .Returns(new WeatherData { Rainfall = 0 }); // No rainfall
+                   .Returns(new WeatherData { Rainfall = 0 }); 
 
         var soilSensorMock = new Mock<ISoilMoistureSensor>();
         soilSensorMock.Setup(sensor => sensor.GetSoilMoisture())
-                      .Returns(20.0); // Below threshold
+                      .Returns(20.0); 
 
         var irrigationMock = new Mock<IIrrigationController>();
 
@@ -113,26 +109,22 @@ public class IrrigationSchedulerTests
             rainfallThreshold: 10.0
         );
 
-        // Act
         scheduler.Work();
 
-        // Assert
         irrigationMock.Verify(controller => controller.Start(), Times.Once);
         irrigationMock.Verify(controller => controller.Stop(), Times.Never);
     }
 
-    // M: Many
     [Fact]
     public void Work_WhenRainfallExceedsThreshold_ShouldStopIrrigation()
     {
-        // Arrange
         var weatherMock = new Mock<IWeatherApi>();
         weatherMock.Setup(api => api.GetWeatherData())
-                   .Returns(new WeatherData { Rainfall = 15.0 }); // Above threshold
+                   .Returns(new WeatherData { Rainfall = 15.0 }); 
 
         var soilSensorMock = new Mock<ISoilMoistureSensor>();
         soilSensorMock.Setup(sensor => sensor.GetSoilMoisture())
-                      .Returns(40.0); // Above threshold
+                      .Returns(40.0); 
 
         var irrigationMock = new Mock<IIrrigationController>();
 
@@ -144,10 +136,8 @@ public class IrrigationSchedulerTests
             rainfallThreshold: 10.0
         );
 
-        // Act
         scheduler.Work();
 
-        // Assert
         irrigationMock.Verify(controller => controller.Start(), Times.Never);
         irrigationMock.Verify(controller => controller.Stop(), Times.Once);
     }
@@ -155,14 +145,13 @@ public class IrrigationSchedulerTests
     [Fact]
     public void Work_WhenRainfallAndMoistureEqualThreshold_ShouldStopIrrigation()
     {
-        // Arrange
         var weatherMock = new Mock<IWeatherApi>();
         weatherMock.Setup(api => api.GetWeatherData())
-                   .Returns(new WeatherData { Rainfall = 10.0 }); // Rainfall at threshold
+                   .Returns(new WeatherData { Rainfall = 10.0 }); 
 
         var soilSensorMock = new Mock<ISoilMoistureSensor>();
         soilSensorMock.Setup(sensor => sensor.GetSoilMoisture())
-                      .Returns(30.0); // Moisture at threshold
+                      .Returns(30.0); 
 
         var irrigationMock = new Mock<IIrrigationController>();
 
@@ -174,26 +163,22 @@ public class IrrigationSchedulerTests
             rainfallThreshold: 10.0
         );
 
-        // Act
         scheduler.Work();
 
-        // Assert
         irrigationMock.Verify(controller => controller.Start(), Times.Never);
         irrigationMock.Verify(controller => controller.Stop(), Times.Once);
     }
 
-    // E: Exceptions
     [Fact]
     public void Work_WhenApiFailsMultipleTimes_ShouldEnterSafeMode()
     {
-        // Arrange
         var weatherMock = new Mock<IWeatherApi>();
         weatherMock.Setup(api => api.GetWeatherData())
-                   .Throws(new Exception()); // Simulate API failure
+                   .Throws(new Exception()); 
 
         var soilSensorMock = new Mock<ISoilMoistureSensor>();
         soilSensorMock.Setup(sensor => sensor.GetSoilMoisture())
-                      .Returns(35.0); // Above threshold
+                      .Returns(35.0); 
 
         var irrigationMock = new Mock<IIrrigationController>();
 
@@ -205,31 +190,27 @@ public class IrrigationSchedulerTests
             rainfallThreshold: 10.0
         );
 
-        // Act: Force multiple failures
         for (int i = 0; i < 3; i++)
         {
             scheduler.Work();
         }
 
-        // Assert
         Assert.True(scheduler.IsInSafeMode, "System should be in Safe Mode.");
         irrigationMock.Verify(controller => controller.Stop(), Times.Once);
     }
 
-    // S: State
     [Fact]
     public void Work_WhenApiRecovers_ShouldExitSafeMode()
     {
-        // Arrange
         var weatherMock = new Mock<IWeatherApi>();
         weatherMock.SetupSequence(api => api.GetWeatherData())
-                   .Throws(new Exception()) // Failures
+                   .Throws(new Exception()) 
                    .Throws(new Exception())
-                   .Returns(new WeatherData { Rainfall = 0 }); // Recovery
+                   .Returns(new WeatherData { Rainfall = 0 }); 
 
         var soilSensorMock = new Mock<ISoilMoistureSensor>();
         soilSensorMock.Setup(sensor => sensor.GetSoilMoisture())
-                      .Returns(20.0); // Below threshold
+                      .Returns(20.0); 
 
         var irrigationMock = new Mock<IIrrigationController>();
 
@@ -241,16 +222,13 @@ public class IrrigationSchedulerTests
             rainfallThreshold: 10.0
         );
 
-        // Act: Enter Safe Mode
         for (int i = 0; i < 3; i++)
         {
             scheduler.Work();
         }
 
-        // Act: Recover
         scheduler.Work();
 
-        // Assert
         Assert.False(scheduler.IsInSafeMode, "System should exit Safe Mode after API recovers.");
         irrigationMock.Verify(controller => controller.Start(), Times.Once);
     }

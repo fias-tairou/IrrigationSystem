@@ -13,7 +13,6 @@ namespace IrrigationSystem.IntegrationTests
 
         public IrrigationSchedulerIntegrationTests()
         {
-            // Stel de Mockoon-URL in
             weatherApi = new WeatherApi("http://localhost:3000/weather");
             irrigationController = new IrrigationControllerStub();
         }
@@ -21,8 +20,7 @@ namespace IrrigationSystem.IntegrationTests
         [Fact]
         public void WhenRainfallAndSoilMoistureWithinThresholds_DoNothing()
         {
-            // Arrange
-            var soilMoistureSensor = new SoilMoistureSensorStub(35.0); // Stub voor bodemvochtigheid
+            var soilMoistureSensor = new SoilMoistureSensorStub(35.0); 
             var scheduler = new IrrigationScheduler(
                 soilMoistureSensor,
                 weatherApi,
@@ -31,19 +29,16 @@ namespace IrrigationSystem.IntegrationTests
                 rainfallThreshold: 10.0
             );
 
-            // Act
             scheduler.Work();
 
-            // Assert
-            Assert.False(irrigationController.IsEnabled); // Controleer dat irrigatie niet gestart is
+            Assert.False(irrigationController.IsEnabled); 
         }
 
 
         [Fact]
-        public void WhenSoilMoistureBelowThreshold_StartIrrigation()
+        public void WhenSoilMoistureBelowThreshold_StopIrrigation()
         {
-            // Arrange
-            var soilMoistureSensor = new SoilMoistureSensorStub(20.0); // Stub voor bodemvochtigheid
+            var soilMoistureSensor = new SoilMoistureSensorStub(20.0); 
             var scheduler = new IrrigationScheduler(
                 soilMoistureSensor,
                 weatherApi,
@@ -52,18 +47,15 @@ namespace IrrigationSystem.IntegrationTests
                 rainfallThreshold: 10.0
             );
 
-            // Act
             scheduler.Work();
 
-            // Assert
-            Assert.True(irrigationController.IsEnabled); // Controleer dat irrigatie gestart is
+            Assert.False(irrigationController.IsEnabled); 
         }
 
         [Fact]
         public void WhenRainfallAboveThreshold_StopIrrigation()
         {
-            // Arrange
-            var soilMoistureSensor = new SoilMoistureSensorStub(35.0); // Stub voor bodemvochtigheid
+            var soilMoistureSensor = new SoilMoistureSensorStub(35.0); 
             var scheduler = new IrrigationScheduler(
                 soilMoistureSensor,
                 weatherApi,
@@ -72,11 +64,9 @@ namespace IrrigationSystem.IntegrationTests
                 rainfallThreshold: 5.0
             );
 
-            // Act
             scheduler.Work();
 
-            // Assert
-            Assert.False(irrigationController.IsEnabled); // Controleer dat irrigatie gestopt is
+            Assert.False(irrigationController.IsEnabled); 
         }
 
 

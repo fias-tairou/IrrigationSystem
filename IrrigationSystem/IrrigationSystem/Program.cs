@@ -7,23 +7,20 @@ public class Program
 {
     public static void Main()
     {
-        // Maak de benodigde services aan
-        var soilMoistureSensor = new SoilMoistureSensor(); // Mock in integratietests
-        var weatherApi = new WeatherApi(); // Verwijst naar JSON op GitHub
-        var irrigationController = new IrrigationController(); // Mock in integratietests
+        var soilMoistureSensor = new SoilMoistureSensor(); 
+        var weatherApi = new WeatherApi(); 
+        var irrigationController = new IrrigationController(); 
 
-        // Maak de scheduler aan met drempelwaarden
         var scheduler = new IrrigationScheduler(
             soilMoistureSensor,
             weatherApi,
             irrigationController,
-            moistureThreshold: 30.0, // Bodemvochtigheidsdrempel
-            rainfallThreshold: 10.0  // Regenvaldrempel
+            moistureThreshold: 30.0,  
+            rainfallThreshold: 10.0  
         );
 
         try
         {
-            // Voer de scheduler uit
             Console.WriteLine("Irrigation System gestart...");
             scheduler.Work();
             Console.WriteLine("Irrigation System voltooid.");

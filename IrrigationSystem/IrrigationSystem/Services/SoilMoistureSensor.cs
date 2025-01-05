@@ -11,7 +11,6 @@ namespace IrrigationSystem.Services
     {
         public double GetSoilMoisture()
         {
-            // Nog niet geïmplementeerd
             throw new NotImplementedException();
         }
     }
