@@ -5,7 +5,9 @@ VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IrrigationSystem", "IrrigationSystem\IrrigationSystem.csproj", "{31C27F08-4D71-48D0-B578-E1FBF490E21C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrrigationSystem.UnitTests", "IrrigationSystem.UnitTests\IrrigationSystem.UnitTests.csproj", "{A3C9FFE1-0579-4C09-96EB-8C081789F90A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IrrigationSystem.UnitTests", "IrrigationSystem.UnitTests\IrrigationSystem.UnitTests.csproj", "{A3C9FFE1-0579-4C09-96EB-8C081789F90A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrrigationSystem.IntegrationTests", "IrrigationSystem.IntegrationTests\IrrigationSystem.IntegrationTests.csproj", "{81DD2BE1-AFC4-4DE0-B7D5-420A6BE39205}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A3C9FFE1-0579-4C09-96EB-8C081789F90A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3C9FFE1-0579-4C09-96EB-8C081789F90A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3C9FFE1-0579-4C09-96EB-8C081789F90A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81DD2BE1-AFC4-4DE0-B7D5-420A6BE39205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81DD2BE1-AFC4-4DE0-B7D5-420A6BE39205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81DD2BE1-AFC4-4DE0-B7D5-420A6BE39205}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81DD2BE1-AFC4-4DE0-B7D5-420A6BE39205}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
